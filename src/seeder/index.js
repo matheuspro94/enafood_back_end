@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const productSchema = require('../model/productSchema')
+const productSchema = require('../app/model/productSchema')
 const product = require('../data/products')
 
 const uri = 'mongodb+srv://app:MatheusPassword@cluster0.ut1xp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
