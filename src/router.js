@@ -8,6 +8,7 @@ routes.get('/products', ProductController.getAllProducts)
 
 routes.post('/bag', BagController.insert)
 routes.get('/bag', BagController.getBag)
+routes.put('/bag/:id', BagController.updateQuantity)
 routes.delete('/bag/:id', BagController.deleteItemBag)
 
 module.exports = routes
