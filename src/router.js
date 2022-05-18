@@ -1,8 +1,11 @@
 const { Router } = require('express')
 const ProductController = require('./app/controllers/ProductController')
 const BagController = require('./app/controllers/BagController')
+const UserController = require('./app/controllers/UserController')
 
 const routes = new Router()
+
+routes.post('/users', UserController.create)
 
 routes.get('/products', ProductController.getAllProducts)
 
