@@ -32,6 +32,12 @@ class UserController {
       email
     })
   }
+
+  async getAllUser(req, res) {
+    const users = await UserModel.find()
+    
+    return res.status(200).json(users)
+  }
 }
 
 module.exports = new UserController
