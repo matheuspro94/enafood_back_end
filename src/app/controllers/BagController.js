@@ -20,17 +20,19 @@ class BagController {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validação falhou' })
     }
-
+    const { userId } = req
     const createBag = await Promise.all(bag.map(async (item) => {
-      const result = await BagModel.create(item)
+      const { name, price, quantity } =  item
+      const result = await BagModel.create({ name, price, quantity, userId })
       return result
     }))
 
     return res.status(200).json({ ok: createBag })
   }
 
-  async getBag(_req, res) {
-    const bag = await BagModel.find()
+  async getBag(req, res) {
+    const { userId } = req
+    const bag = await BagModel.find({ userId })
 
     return res.status(200).json({ bag })
   }
@@ -38,11 +40,20 @@ class BagController {
   async updateQuantity(req, res) {
     const { id } = req.params
     const { quantity } = req.body
+    const { userId } = req
 
     const productExist = await BagModel.findOne({_id: mongoose.Types.ObjectId(id)})
+    console.log(userId);
 
+    console.log(productExist.userId);
+
+    
     if(!productExist) {
       return res.status(400).json({ message: 'id não encontrado'})
+    }
+    
+    if (userId !== productExist.userId) {
+      return res.status(401).json({ message: 'Usuário não autorizado'})
     }
     
     await BagModel.updateOne(

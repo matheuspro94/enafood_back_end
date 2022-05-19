@@ -1,5 +1,6 @@
 const UserModel = require('../model/UserModel')
 const yup = require('yup')
+const bcrypt = require('bcryptjs')
 
 class UserController {
   async create(req, res) {
@@ -18,8 +19,12 @@ class UserController {
     if (userExists) {
       return res.status(400).json({ error: 'User already exists.' });
     }
+    
+    const { _id: id, name, email, password} = req.body
 
-    const { _id: id, name, email } = await UserModel.create(req.body)
+    const hash = await bcrypt.hash(password, 8)
+
+    await UserModel.create({ _id: id, name, email, password_hash: hash })
 
     return res.status(200).json({
       _id: id,
